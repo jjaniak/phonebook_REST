@@ -21,7 +21,7 @@ public class PhoneBookService {
         this.repository = repository;
     }
 
-    public Set<Contact> findAll() {
+    public Map<String, Contact> findAll() {
         return repository.findAll();
     }
 

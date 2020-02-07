@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -16,7 +17,7 @@ public class ContactController {
     PhoneBookService phoneBookService;
 
     @GetMapping("/contacts")
-    public Set<Contact> showAllContacts() {
+    public Map<String, Contact> showAllContacts() {
         return phoneBookService.findAll();
     }
 

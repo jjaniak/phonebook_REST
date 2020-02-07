@@ -14,15 +14,16 @@ import java.util.*;
 public class AppConfig {
 
     @Bean
-    public Set<Contact> defaultData() {
-        Set<Contact> data = new LinkedHashSet<>();
-        data.add(new Contact("Peter", new HashSet<>(Arrays.asList("+504550479"))));
-        data.add(new Contact("John", new HashSet<>(Arrays.asList("+607233428", "+799630596", "+642908355"))));
+    public Map<String, Contact> defaultData() {
+        Map<String, Contact> data = new LinkedHashMap<>();
+        data.put("Peter", new Contact("Peter", new HashSet<>(Arrays.asList("+48504550479"))));
+        data.put("John", new Contact("John", new HashSet<>(Arrays.asList("+48607233428", "+48799630596", "+48642908355"))));
+        data.put("Maria", new Contact("Maria", new HashSet<>(Arrays.asList("+48683456214", "+48770481295"))));
         return data;
     }
 
     @Bean(name = "repository")
-    public InMemoryRepository inMemoryRepository(Set<Contact> defaultData) {
+    public InMemoryRepository inMemoryRepository(Map<String, Contact> defaultData) {
         return new InMemoryRepositoryImpl(defaultData);
     }
 }

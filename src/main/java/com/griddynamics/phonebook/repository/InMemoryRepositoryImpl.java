@@ -9,27 +9,26 @@ import java.util.*;
 @Repository
 public class InMemoryRepositoryImpl implements InMemoryRepository {
 
-    private Set<Contact> data;
+    private Map<String, Contact> data;
 
     public InMemoryRepositoryImpl() {
-        this(new LinkedHashSet<>());
+        this(new LinkedHashMap<>());
     }
 
-    public InMemoryRepositoryImpl(Set<Contact> data) {
-        this.data = new LinkedHashSet<>(data);
+    public InMemoryRepositoryImpl(Map<String, Contact> data) {
+        this.data = new LinkedHashMap<>(data);
     }
 
     @Override
-    public Set<Contact> findAll() {
-        return new LinkedHashSet<>(this.data);  // check this later
+    public Map<String, Contact> findAll() {
+        return new LinkedHashMap<>(this.data);  // check this later
     }
 
     @Override
     public Set<String> findAllPhonesByName(String name) {
-        for (Contact c : data) {
-            if (c.getName().equals(name)) {
-                return c.getPhoneNumbers();
-            }
+        Contact contact = this.data.get(name);
+        if (null != contact) {
+            return contact.getPhoneNumbers();
         }
         throw new IllegalArgumentException("There is no contact with such a name: '" + name + "' in the phone book");
     }
@@ -39,36 +38,29 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
         if (contact.getName().isEmpty()) {
             throw new IllegalArgumentException("Contact need to have a name");
         }
-
         if (contact.getPhoneNumbers().isEmpty()) {
             throw new IllegalArgumentException("Contact need to contain at least one phone number");
         }
         Contact createdContact = new Contact(contact.getName(), contact.getPhoneNumbers());
-        data.add(createdContact);
+        data.put(contact.getName(), createdContact);
         return createdContact;
     }
 
     @Override
     public Contact addPhone(String name, String phoneNumber) {
-        for (Contact c : data) {
-            if (c.getName().equals(name)) {
-                c.getPhoneNumbers().add(phoneNumber);
-                return c;
-            }
+        Contact contact = data.get(name);
+        if (null != contact) {
+            contact.getPhoneNumbers().add(phoneNumber);
+            return contact;
         }
         throw new IllegalArgumentException("The name '" + name + "' is not in the phone book");
     }
 
     @Override
     public void removeContact(String name) throws IllegalArgumentException {
-        Contact contactToBeRemoved = null;
-        for (Contact c : data) {
-            if (c.getName().equals(name)) {
-                contactToBeRemoved = c;
-            }
-        }
-        if (contactToBeRemoved != null) {
-            data.remove(contactToBeRemoved);
+        Contact contact = data.get(name);
+        if (null != contact) {
+            data.remove(name);
         } else throw new IllegalArgumentException("The name '" + name + "' is not in the phone book");
     }
 }
