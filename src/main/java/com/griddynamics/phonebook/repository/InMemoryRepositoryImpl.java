@@ -20,8 +20,8 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public Map<String, Contact> findAll() {
-        return new LinkedHashMap<>(this.data);  // check this later
+    public Set<Contact> findAll() {
+        return new LinkedHashSet<>(this.data.values());  // check this later
     }
 
     @Override

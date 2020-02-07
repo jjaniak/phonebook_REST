@@ -17,7 +17,7 @@ public class ContactController {
     PhoneBookService phoneBookService;
 
     @GetMapping("/contacts")
-    public Map<String, Contact> showAllContacts() {
+    public Set<Contact> showAllContacts() {
         return phoneBookService.findAll();
     }
 
