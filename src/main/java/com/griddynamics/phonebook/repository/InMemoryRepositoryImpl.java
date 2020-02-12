@@ -25,20 +25,20 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public Set<String> findAllPhonesByName(String name) {
+    public Set<String> findAllPhonesByName(String name) throws NoSuchElementException {
         Contact contact = this.data.get(name);
         if (null != contact) {
             return contact.getPhoneNumbers();
         }
-        throw new IllegalArgumentException("There is no contact with such a name: '" + name + "' in the phone book");
+        throw new NoSuchElementException("There is no contact with name '" + name + "' in the phone book");
     }
 
     @Override
-    public Contact addContact(Contact contact) {
-        if (contact.getName().isEmpty()) {
+    public Contact addContact(Contact contact) throws IllegalArgumentException {
+        if (null == contact.getName() || contact.getName().isEmpty()) {
             throw new IllegalArgumentException("Contact need to have a name");
         }
-        if (contact.getPhoneNumbers().isEmpty()) {
+        if (null == contact.getPhoneNumbers() || contact.getPhoneNumbers().isEmpty()) {
             throw new IllegalArgumentException("Contact need to contain at least one phone number");
         }
         Contact createdContact = new Contact(contact.getName(), contact.getPhoneNumbers());
@@ -47,20 +47,24 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public Contact addPhone(String name, String phoneNumber) {
+    public Contact addPhone(String name, String phoneNumber) throws IllegalArgumentException, NoSuchElementException {
+        if (null == phoneNumber || phoneNumber.isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty");
+        }
+
         Contact contact = data.get(name);
         if (null != contact) {
             contact.getPhoneNumbers().add(phoneNumber);
             return contact;
         }
-        throw new IllegalArgumentException("The name '" + name + "' is not in the phone book");
+        throw new NoSuchElementException("name '" + name + "' is not in the phone book");
     }
 
     @Override
-    public void removeContact(String name) throws IllegalArgumentException {
+    public void removeContact(String name) throws NoSuchElementException {
         Contact contact = data.get(name);
         if (null != contact) {
             data.remove(name);
-        } else throw new IllegalArgumentException("The name '" + name + "' is not in the phone book");
+        } else throw new NoSuchElementException("name '" + name + "' is not in the phone book");
     }
 }
