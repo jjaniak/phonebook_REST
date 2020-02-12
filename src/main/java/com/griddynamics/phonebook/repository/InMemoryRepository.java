@@ -2,12 +2,13 @@ package com.griddynamics.phonebook.repository;
 
 import com.griddynamics.phonebook.model.Contact;
 
+import java.util.Collection;
 import java.util.Set;
 
 
 public interface InMemoryRepository {
 
-    Set<Contact> findAll();
+    Collection<Contact> findAll();
 
     Set<String> findAllPhonesByName(String name);
 

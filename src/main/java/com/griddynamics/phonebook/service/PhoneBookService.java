@@ -5,6 +5,7 @@ import com.griddynamics.phonebook.repository.InMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class PhoneBookService {
         this.repository = repository;
     }
 
-    public Set<Contact>  findAll() {
+    public Collection<Contact> findAll() {
         return repository.findAll();
     }
 
