@@ -19,15 +19,7 @@ public class Contact {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Set<String> getPhoneNumbers() {
         return phoneNumbers;
-    }
-
-    public void setPhoneNumbers(Set<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
     }
 }
