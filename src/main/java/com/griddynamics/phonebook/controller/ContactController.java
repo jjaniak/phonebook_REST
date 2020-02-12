@@ -27,8 +27,7 @@ public class ContactController {
         return phoneBookService.findAllPhonesByName(name);
     }
 
-    // returns 201 instead of 200
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)  // returns 201 instead of default 200
     @PostMapping("/contacts")
     public Contact createContact(@RequestBody Contact contact) {
         return phoneBookService.addContact(contact);
@@ -44,6 +43,6 @@ public class ContactController {
 
     @DeleteMapping("/contacts/{name}")
     public void deleteContact(@PathVariable String name) {
-        phoneBookService.removeContact(name);     // needs to throw an error if name not found
+        phoneBookService.removeContact(name);
     }
 }
