@@ -4,6 +4,7 @@ import com.griddynamics.phonebook.model.Contact;
 import com.griddynamics.phonebook.service.PhoneBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -34,8 +35,10 @@ public class ContactController {
     }
 
     @PutMapping("/contacts/{name}")
+    // if you don't want to use String array (necessary for JSON syntax) as parameter, e.g. ["+123456"]
+    // then you can pass String in @RequestBody and change MediaType as below:
+    //    @PutMapping(value = "/contacts/{name}", consumes = MediaType.TEXT_PLAIN_VALUE)
     public Contact addPhoneToContact(@PathVariable String name, @RequestBody String[] phoneNumber) {
-        // phoneNumber is passed as an array ["+12345"] to conform with JSON syntax
         return phoneBookService.addPhone(name, phoneNumber[0]);
     }
 
