@@ -1,10 +1,15 @@
 package com.griddynamics.phonebook.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 public class Contact {
 
+    @NotBlank(message = "Contact need to have a name")
     private String name;
+
+    @NotEmpty(message = "Contact need to contain at least one phone number")
     private Set<String> phoneNumbers;
 
     public Contact() {

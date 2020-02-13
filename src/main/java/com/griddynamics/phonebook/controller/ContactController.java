@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class ContactController {
 
     @ResponseStatus(HttpStatus.CREATED)  // returns 201 instead of default 200
     @PostMapping("/contacts")
-    public Contact createContact(@RequestBody Contact contact) {
+    public Contact createContact(@RequestBody @Valid Contact contact) {
         return phoneBookService.addContact(contact);
     }
 

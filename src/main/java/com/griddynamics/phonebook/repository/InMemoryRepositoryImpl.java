@@ -34,13 +34,7 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public Contact addContact(Contact contact) throws IllegalArgumentException {
-        if (null == contact.getName() || contact.getName().isEmpty()) {
-            throw new IllegalArgumentException("Contact need to have a name");
-        }
-        if (null == contact.getPhoneNumbers() || contact.getPhoneNumbers().isEmpty()) {
-            throw new IllegalArgumentException("Contact need to contain at least one phone number");
-        }
+    public Contact addContact(Contact contact) {
         Contact createdContact = new Contact(contact.getName(), contact.getPhoneNumbers());
         data.put(contact.getName(), createdContact);
         return createdContact;

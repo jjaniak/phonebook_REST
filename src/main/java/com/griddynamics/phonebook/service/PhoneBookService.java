@@ -30,7 +30,7 @@ public class PhoneBookService {
         return repository.findAllPhonesByName(name);
     }
 
-    public Contact addContact(Contact contact) throws IllegalArgumentException{
+    public Contact addContact(Contact contact) {
         return repository.addContact(contact);
     }
 
