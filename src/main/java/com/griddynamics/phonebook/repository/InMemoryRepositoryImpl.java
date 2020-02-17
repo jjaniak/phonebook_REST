@@ -11,6 +11,10 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
 
     private Map<String, Contact> data;
 
+    public Map<String, Contact> getData() {
+        return data;
+    }
+
     public InMemoryRepositoryImpl() {
         this(new LinkedHashMap<>());
     }
