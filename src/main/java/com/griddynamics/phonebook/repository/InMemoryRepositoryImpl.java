@@ -46,8 +46,8 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
 
     @Override
     public Contact addPhone(String name, String phoneNumber) throws IllegalArgumentException, NoSuchElementException {
-        if (null == phoneNumber || phoneNumber.isEmpty()) {
-            throw new IllegalArgumentException("Phone number cannot be empty");
+        if (null == phoneNumber || phoneNumber.isBlank()) {
+            throw new IllegalArgumentException("phone number cannot be empty");
         }
 
         Contact contact = data.get(name);
