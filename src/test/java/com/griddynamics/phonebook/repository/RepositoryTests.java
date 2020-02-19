@@ -1,8 +1,6 @@
-package com.griddynamics.phonebook;
+package com.griddynamics.phonebook.repository;
 
 import com.griddynamics.phonebook.model.Contact;
-import com.griddynamics.phonebook.repository.InMemoryRepository;
-import com.griddynamics.phonebook.repository.InMemoryRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
