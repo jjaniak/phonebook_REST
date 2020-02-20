@@ -96,18 +96,13 @@ public class ContactControllerTest {
 
     @Test
     public void shouldThrowExceptionWhenGettingPhonesWithInvalidName() throws Exception {
-//        String errorJson = "{\"status\": \"404\", \"message\": \"There is no contact with name 'Donald' in the phone book\"}";
-//        ErrorMessage error = new ErrorMessage("404", "There is no contact with name 'Donald' in the phone book");
-
         when(mockService
                 .findAllPhonesByName(name))
                 .thenThrow(new NoSuchElementException());
-//                .thenReturn(error);       // ? why it's not possible?
 
         mockMvc.perform(get(URI + name))
                 .andDo(print())
                 .andExpect(status().isNotFound());
-//                .andExpect(content().json(errorJson));
 
         verify(mockService, times(1)).findAllPhonesByName(name);
     }
