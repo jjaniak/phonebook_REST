@@ -37,7 +37,7 @@ public class ContactControllerTest {
     private final Set<String> phoneNumbers = new HashSet<>(Arrays.asList("+1234567", "+4567890"));
     private final String phoneNumbersJson = "[\"+1234567\", \"+4567890\"]";
     private final Contact contact = new Contact(name, phoneNumbers);
-    private final String contactJson = "[ { \"name\": \"Donald\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] } ]";
+    private final String contactJson = "{ \"name\": \"Donald\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
 
     @Mock
     private PhoneBookService mockService;
@@ -74,7 +74,7 @@ public class ContactControllerTest {
         mockMvc.perform(get(URI))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(contactJson));
+                .andExpect(content().json("[" + contactJson + "]"));
 
         verify(mockService, times(1)).findAll();
     }
