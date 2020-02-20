@@ -39,6 +39,10 @@ public class ContactControllerTest {
     private final Contact contact = new Contact(name, phoneNumbers);
     private final String contactJson = "{ \"name\": \"Donald\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
 
+    private final String exceptionMessage = "name '" + name + "' is not in the phone book";
+    private final String jsonErrorMessage ="{ \"status\": \"404\", \"message\": \"name '"
+            + name + "' is not in the phone book\" }";
+
     @Mock
     private PhoneBookService mockService;
 
@@ -99,11 +103,12 @@ public class ContactControllerTest {
     public void shouldThrowExceptionWhenGettingPhonesWithInvalidName() throws Exception {
         when(mockService
                 .findAllPhonesByName(name))
-                .thenThrow(new NoSuchElementException());
+                .thenThrow(new NoSuchElementException(exceptionMessage));
 
         mockMvc.perform(get(URI + name))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(jsonErrorMessage));
 
         verify(mockService, times(1)).findAllPhonesByName(name);
     }
@@ -138,11 +143,13 @@ public class ContactControllerTest {
 
     @Test
     public void shouldThrowExceptionWhenDeletingContactWithInvalidName() throws Exception {
-        doThrow(new NoSuchElementException()).when(mockService).removeContact(name);
+        doThrow(new NoSuchElementException(exceptionMessage)).when(mockService).removeContact(name);
 
         mockMvc.perform(delete(URI + name))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(jsonErrorMessage));
+
 
         verify(mockService, times(1)).removeContact(name);
     }
