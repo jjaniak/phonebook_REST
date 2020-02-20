@@ -18,11 +18,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.*;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -114,13 +115,15 @@ public class ContactControllerTest {
     }
 
     @Test
-    @Disabled   // todo fix this test
     public void shouldCreateContact() throws Exception {
         when(mockService
                 .addContact(contact))
                 .thenReturn(contact);
 
-        mockMvc.perform(post(URI).contentType(MediaType.APPLICATION_JSON).content(contactJson))
+        mockMvc.perform(post(URI)
+                .content(contactJson)
+                .contentType(APPLICATION_JSON)
+                .characterEncoding(UTF_8.name()))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().json(contactJson));
