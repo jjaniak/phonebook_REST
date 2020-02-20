@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -48,8 +48,10 @@ public class ContactControllerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);  // to initialize fields annotated with Mockito annotations
+
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .setControllerAdvice(new GlobalExceptionHandler()).build();
     }
 
