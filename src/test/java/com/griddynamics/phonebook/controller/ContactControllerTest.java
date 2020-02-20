@@ -1,7 +1,6 @@
 package com.griddynamics.phonebook.controller;
 
 import com.griddynamics.phonebook.config.AppConfig;
-import com.griddynamics.phonebook.config.AppInitializer;
 import com.griddynamics.phonebook.model.Contact;
 import com.griddynamics.phonebook.service.PhoneBookService;
 import com.griddynamics.phonebook.util.GlobalExceptionHandler;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {AppConfig.class})  // ? which context configuration should be here? AppInitializer.class
+@ContextConfiguration(classes = {AppConfig.class})
 public class ContactControllerTest {
 
     private static final String URI = "/api/v1/contacts/";
@@ -75,7 +74,7 @@ public class ContactControllerTest {
         mockMvc.perform(get(URI))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(contactJson)); // ? does it make sense to check if it returns what it was stubbed with?
+                .andExpect(content().json(contactJson));
 
         verify(mockService, times(1)).findAll();
     }
