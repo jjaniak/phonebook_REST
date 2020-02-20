@@ -34,15 +34,19 @@ public class ContactControllerTest {
     private static final String URI = "/api/v1/contacts/";
     private MockMvc mockMvc;
 
-    private final String name = "Donald";
-    private final Set<String> phoneNumbers = new HashSet<>(Arrays.asList("+1234567", "+4567890"));
-    private final String phoneNumbersJson = "[\"+1234567\", \"+4567890\"]";
-    private final Contact contact = new Contact(name, phoneNumbers);
-    private final String contactJson = "{ \"name\": \"Donald\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
+    private static final String NAME = "Donald";
+    private static final String PHONE = "+520487533";
+    private static final String JSON_PHONE = "[\"+520487533\"]";
+    private static final Set<String> PHONE_NUMBERS = new HashSet<>(Arrays.asList("+1234567", "+4567890"));
+    private static final String PHONE_NUMBERS_JSON = "[\"+1234567\", \"+4567890\"]";
+    private static final Contact CONTACT = new Contact(NAME, PHONE_NUMBERS);
+    private static final String CONTACT_JSON = "{ \"name\": \"Donald\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
 
-    private final String exceptionMessage = "name '" + name + "' is not in the phone book";
-    private final String jsonErrorMessage ="{ \"status\": \"404\", \"message\": \"name '"
-            + name + "' is not in the phone book\" }";
+    private static final String EXCEPTION_MESSAGE = "name '" + NAME + "' is not in the phone book";
+    private static final String JSON_ERROR_MESSAGE ="{ \"status\": \"404\", \"message\": \"name '"
+            + NAME + "' is not in the phone book\" }";
+    private static final String EXCEPTION_MESSAGE_2 = "phone number cannot be empty";
+    private static final String JSON_ERROR_MESSAGE_2 = "{ \"status\": \"400\", \"message\": \"phone number cannot be empty\" }";
 
     @Mock
     private PhoneBookService mockService;
@@ -76,12 +80,12 @@ public class ContactControllerTest {
     public void shouldGetAllContacts() throws Exception {
         when(mockService
                 .findAll())
-                .thenReturn(Arrays.asList(contact));
+                .thenReturn(Arrays.asList(CONTACT));
 
         mockMvc.perform(get(URI))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("[" + contactJson + "]"));
+                .andExpect(content().json("[" + CONTACT_JSON + "]"));
 
         verify(mockService, times(1)).findAll();
     }
@@ -89,46 +93,46 @@ public class ContactControllerTest {
     @Test
     public void shouldGetPhoneNumbers() throws Exception {
         when(mockService
-                .findAllPhonesByName(name))
-                .thenReturn(phoneNumbers);
+                .findAllPhonesByName(NAME))
+                .thenReturn(PHONE_NUMBERS);
 
-        mockMvc.perform(get(URI + name))
+        mockMvc.perform(get(URI + NAME))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(phoneNumbersJson));
+                .andExpect(content().json(PHONE_NUMBERS_JSON));
 
-        verify(mockService, times(1)).findAllPhonesByName(name);
+        verify(mockService, times(1)).findAllPhonesByName(NAME);
     }
 
     @Test
     public void shouldThrowExceptionWhenGettingPhonesWithInvalidName() throws Exception {
         when(mockService
-                .findAllPhonesByName(name))
-                .thenThrow(new NoSuchElementException(exceptionMessage));
+                .findAllPhonesByName(NAME))
+                .thenThrow(new NoSuchElementException(EXCEPTION_MESSAGE));
 
-        mockMvc.perform(get(URI + name))
+        mockMvc.perform(get(URI + NAME))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(jsonErrorMessage));
+                .andExpect(content().json(JSON_ERROR_MESSAGE));
 
-        verify(mockService, times(1)).findAllPhonesByName(name);
+        verify(mockService, times(1)).findAllPhonesByName(NAME);
     }
 
     @Test
     public void shouldCreateContact() throws Exception {
         when(mockService
-                .addContact(contact))
-                .thenReturn(contact);
+                .addContact(CONTACT))
+                .thenReturn(CONTACT);
 
         mockMvc.perform(post(URI)
-                .content(contactJson)
+                .content(CONTACT_JSON)
                 .contentType(APPLICATION_JSON)
                 .characterEncoding(UTF_8.name()))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().json(contactJson));
+                .andExpect(content().json(CONTACT_JSON));
 
-        verify(mockService, times(1)).addContact(contact);
+        verify(mockService, times(1)).addContact(CONTACT);
     }
 
     // todo add tests:
@@ -137,23 +141,22 @@ public class ContactControllerTest {
 
     @Test
     public void shouldDeleteContact() throws Exception {
-        mockMvc.perform(delete(URI + name))
+        mockMvc.perform(delete(URI + NAME))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(mockService, times(1)).removeContact(name);
+        verify(mockService, times(1)).removeContact(NAME);
     }
 
     @Test
     public void shouldThrowExceptionWhenDeletingContactWithInvalidName() throws Exception {
-        doThrow(new NoSuchElementException(exceptionMessage)).when(mockService).removeContact(name);
+        doThrow(new NoSuchElementException(EXCEPTION_MESSAGE)).when(mockService).removeContact(NAME);
 
-        mockMvc.perform(delete(URI + name))
+        mockMvc.perform(delete(URI + NAME))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(jsonErrorMessage));
+                .andExpect(content().json(JSON_ERROR_MESSAGE));
 
-
-        verify(mockService, times(1)).removeContact(name);
+        verify(mockService, times(1)).removeContact(NAME);
     }
 }
