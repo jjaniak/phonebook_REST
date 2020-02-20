@@ -135,9 +135,72 @@ public class ContactControllerTest {
         verify(mockService, times(1)).addContact(CONTACT);
     }
 
-    // todo add tests:
-    // checking throwing an error when creating contact with invalid parameters
-    // update contact, check throwinng error when updating contact
+    @Test
+    @Disabled
+    public void ThrowExceptionWhenCreatingContactWithInvalidValues() throws Exception {
+        Contact invalidContact = new Contact("", PHONE_NUMBERS);
+        String invalidContactJson = "{ \"name\": \"\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
+
+        mockMvc.perform(post(URI)
+                .content(invalidContactJson)
+                .contentType(APPLICATION_JSON)
+                .characterEncoding(UTF_8.name()))
+                .andDo(print())
+                .andExpect(status().isBadRequest());  // ? not working, MethodArgumentNotValidException doesn't get thrown
+
+        verify(mockService, times(1)).addContact(invalidContact);
+    }
+
+    @Test
+    public void shouldAddPhoneToContact() throws Exception {
+        when(mockService
+                .addPhone(NAME, PHONE))
+                .thenReturn(CONTACT);
+
+        mockMvc.perform(put(URI + NAME)
+                .content(JSON_PHONE)
+                .contentType(APPLICATION_JSON)
+                .characterEncoding(UTF_8.name()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(CONTACT_JSON));
+
+        verify(mockService, times(1)).addPhone(NAME, PHONE);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenAddingPhoneWithInvalidPhoneNumber() throws Exception {
+        when(mockService
+                .addPhone(NAME, PHONE))
+                .thenThrow(new IllegalArgumentException(EXCEPTION_MESSAGE_2));
+
+        mockMvc.perform(put(URI + NAME)
+                .content(JSON_PHONE)
+                .contentType(APPLICATION_JSON)
+                .characterEncoding(UTF_8.name()))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(JSON_ERROR_MESSAGE_2));
+
+        verify(mockService, times(1)).addPhone(NAME, PHONE);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenAddingPhoneWithInvalidName() throws Exception {
+        when(mockService
+                .addPhone(NAME, PHONE))
+                .thenThrow(new NoSuchElementException(EXCEPTION_MESSAGE));
+
+        mockMvc.perform(put(URI + NAME)
+                .content(JSON_PHONE)
+                .contentType(APPLICATION_JSON)
+                .characterEncoding(UTF_8.name()))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(JSON_ERROR_MESSAGE));
+
+        verify(mockService, times(1)).addPhone(NAME, PHONE);
+    }
 
     @Test
     public void shouldDeleteContact() throws Exception {
