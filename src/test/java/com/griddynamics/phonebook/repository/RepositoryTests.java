@@ -61,7 +61,7 @@ public class RepositoryTests {
         Exception exception1 = assertThrows(NoSuchElementException.class,
                 ()-> repository.findAllPhonesByName(invalidName));
 
-        assertEquals("There is no contact with name '" + invalidName + "' in the phone book",
+        assertEquals("name '" + invalidName + "' is not in the phone book",
                 exception1.getMessage());
     }
 

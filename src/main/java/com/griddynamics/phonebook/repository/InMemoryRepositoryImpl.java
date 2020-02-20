@@ -34,7 +34,7 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
         if (null != contact) {
             return contact.getPhoneNumbers();
         }
-        throw new NoSuchElementException("There is no contact with name '" + name + "' in the phone book");
+        throw new NoSuchElementException("name '" + name + "' is not in the phone book");
     }
 
     @Override
