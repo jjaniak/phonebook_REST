@@ -5,7 +5,6 @@ import com.griddynamics.phonebook.model.Contact;
 import com.griddynamics.phonebook.service.PhoneBookService;
 import com.griddynamics.phonebook.util.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.*;
 
@@ -61,6 +61,7 @@ public class ContactControllerTest {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
+                .setValidator(new LocalValidatorFactoryBean())
                 .setControllerAdvice(new GlobalExceptionHandler()).build();
     }
 
@@ -136,7 +137,6 @@ public class ContactControllerTest {
     }
 
     @Test
-    @Disabled
     public void ThrowExceptionWhenCreatingContactWithInvalidValues() throws Exception {
         Contact invalidContact = new Contact("", PHONE_NUMBERS);
         String invalidContactJson = "{ \"name\": \"\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
@@ -146,9 +146,9 @@ public class ContactControllerTest {
                 .contentType(APPLICATION_JSON)
                 .characterEncoding(UTF_8.name()))
                 .andDo(print())
-                .andExpect(status().isBadRequest());  // ? not working, MethodArgumentNotValidException doesn't get thrown
+                .andExpect(status().isBadRequest());
 
-        verify(mockService, times(1)).addContact(invalidContact);
+        verify(mockService, times(0)).addContact(invalidContact);
     }
 
     @Test
