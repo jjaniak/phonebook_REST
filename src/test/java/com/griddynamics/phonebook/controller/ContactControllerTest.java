@@ -74,7 +74,7 @@ public class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(emptyArray));
 
-        verify(mockService, times(1)).findAll();
+        verify(mockService).findAll();
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("[" + CONTACT_JSON + "]"));
 
-        verify(mockService, times(1)).findAll();
+        verify(mockService).findAll();
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(PHONE_NUMBERS_JSON));
 
-        verify(mockService, times(1)).findAllPhonesByName(NAME);
+        verify(mockService).findAllPhonesByName(NAME);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class ContactControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(JSON_ERROR_MESSAGE));
 
-        verify(mockService, times(1)).findAllPhonesByName(NAME);
+        verify(mockService).findAllPhonesByName(NAME);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class ContactControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(CONTACT_JSON));
 
-        verify(mockService, times(1)).addContact(CONTACT);
+        verify(mockService).addContact(CONTACT);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(CONTACT_JSON));
 
-        verify(mockService, times(1)).addPhone(NAME, PHONE);
+        verify(mockService).addPhone(NAME, PHONE);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class ContactControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(JSON_ERROR_MESSAGE_2));
 
-        verify(mockService, times(1)).addPhone(NAME, PHONE);
+        verify(mockService).addPhone(NAME, PHONE);
     }
 
     @Test
@@ -199,7 +199,7 @@ public class ContactControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(JSON_ERROR_MESSAGE));
 
-        verify(mockService, times(1)).addPhone(NAME, PHONE);
+        verify(mockService).addPhone(NAME, PHONE);
     }
 
     @Test
@@ -208,7 +208,7 @@ public class ContactControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(mockService, times(1)).removeContact(NAME);
+        verify(mockService).removeContact(NAME);
     }
 
     @Test
@@ -220,6 +220,6 @@ public class ContactControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(JSON_ERROR_MESSAGE));
 
-        verify(mockService, times(1)).removeContact(NAME);
+        verify(mockService).removeContact(NAME);
     }
 }
