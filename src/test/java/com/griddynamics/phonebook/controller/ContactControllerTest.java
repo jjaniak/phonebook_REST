@@ -1,5 +1,6 @@
 package com.griddynamics.phonebook.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.griddynamics.phonebook.config.AppConfig;
 import com.griddynamics.phonebook.model.Contact;
 import com.griddynamics.phonebook.service.PhoneBookService;
@@ -32,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ContactControllerTest {
 
     private static final String URI = "/api/v1/contacts/";
-    private MockMvc mockMvc;
 
     private static final String NAME = "Donald";
     private static final String PHONE = "+520487533";
@@ -47,6 +47,9 @@ public class ContactControllerTest {
             + NAME + "' is not in the phone book\" }";
     private static final String EXCEPTION_MESSAGE_2 = "phone number cannot be empty";
     private static final String JSON_ERROR_MESSAGE_2 = "{ \"status\": \"400\", \"message\": \"phone number cannot be empty\" }";
+
+    private MockMvc mockMvc;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Mock
     private PhoneBookService mockService;
@@ -79,6 +82,9 @@ public class ContactControllerTest {
 
     @Test
     public void shouldGetAllContacts() throws Exception {
+        List<Contact> list = new ArrayList<>(Arrays.asList(CONTACT));
+        String listOfContacts = mapper.writeValueAsString(list);
+
         when(mockService
                 .findAll())
                 .thenReturn(Arrays.asList(CONTACT));
@@ -86,7 +92,7 @@ public class ContactControllerTest {
         mockMvc.perform(get(URI))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json("[" + CONTACT_JSON + "]"));
+                .andExpect(content().json(listOfContacts));
 
         verify(mockService).findAll();
     }
@@ -139,7 +145,7 @@ public class ContactControllerTest {
     @Test
     public void ThrowExceptionWhenCreatingContactWithInvalidValues() throws Exception {
         Contact invalidContact = new Contact("", PHONE_NUMBERS);
-        String invalidContactJson = "{ \"name\": \"\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
+        String invalidContactJson = mapper.writeValueAsString(invalidContact);
 
         mockMvc.perform(post(URI)
                 .content(invalidContactJson)
