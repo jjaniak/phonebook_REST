@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -26,7 +25,7 @@ public class PhoneBookService {
         return repository.findAll();
     }
 
-    public Set<String> findAllPhonesByName(String name) throws NoSuchElementException{
+    public Set<String> findAllPhonesByName(String name) {
         return repository.findAllPhonesByName(name);
     }
 
@@ -34,11 +33,11 @@ public class PhoneBookService {
         return repository.addContact(contact);
     }
 
-    public Contact addPhone(String name, String phoneNumber) throws IllegalArgumentException, NoSuchElementException{
+    public Contact addPhone(String name, String phoneNumber) {
         return repository.addPhone(name, phoneNumber);
     }
 
-    public void removeContact(String name) throws NoSuchElementException{
+    public void removeContact(String name) {
         repository.removeContact(name);
     }
 }

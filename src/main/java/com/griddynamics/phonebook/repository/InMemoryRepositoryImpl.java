@@ -29,7 +29,7 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public Set<String> findAllPhonesByName(String name) throws NoSuchElementException {
+    public Set<String> findAllPhonesByName(String name) {
         Contact contact = this.data.get(name);
         if (null != contact) {
             return contact.getPhoneNumbers();
@@ -45,7 +45,7 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public Contact addPhone(String name, String phoneNumber) throws IllegalArgumentException, NoSuchElementException {
+    public Contact addPhone(String name, String phoneNumber) {
         if (null == phoneNumber || phoneNumber.isBlank()) {
             throw new IllegalArgumentException("phone number cannot be empty");
         }
@@ -59,7 +59,7 @@ public class InMemoryRepositoryImpl implements InMemoryRepository {
     }
 
     @Override
-    public void removeContact(String name) throws NoSuchElementException {
+    public void removeContact(String name) {
         Contact contact = data.get(name);
         if (null != contact) {
             data.remove(name);
