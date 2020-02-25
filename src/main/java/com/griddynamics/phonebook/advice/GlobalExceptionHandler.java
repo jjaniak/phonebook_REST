@@ -1,5 +1,7 @@
-package com.griddynamics.phonebook.util;
+package com.griddynamics.phonebook.advice;
 
+import com.griddynamics.phonebook.util.ErrorMessage;
+import com.griddynamics.phonebook.util.FieldErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

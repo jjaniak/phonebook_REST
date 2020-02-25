@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.griddynamics.phonebook.config.AppConfig;
 import com.griddynamics.phonebook.model.Contact;
 import com.griddynamics.phonebook.service.PhoneBookService;
-import com.griddynamics.phonebook.util.GlobalExceptionHandler;
+import com.griddynamics.phonebook.advice.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
