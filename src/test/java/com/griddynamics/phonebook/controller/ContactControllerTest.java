@@ -212,7 +212,7 @@ public class ContactControllerTest {
     public void shouldDeleteContact() throws Exception {
         mockMvc.perform(delete(URI + NAME))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(mockService).removeContact(NAME);
     }
