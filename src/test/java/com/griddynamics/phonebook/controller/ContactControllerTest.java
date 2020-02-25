@@ -37,7 +37,7 @@ public class ContactControllerTest {
     private static final String NAME = "Donald";
     private static final String PHONE = "+520487533";
     private static final String JSON_PHONE = "[\"+520487533\"]";
-    private static final Set<String> PHONE_NUMBERS = new HashSet<>(Arrays.asList("+1234567", "+4567890"));
+    private static final Set<String> PHONE_NUMBERS = Set.of("+1234567", "+4567890");
     private static final String PHONE_NUMBERS_JSON = "[\"+1234567\", \"+4567890\"]";
     private static final Contact CONTACT = new Contact(NAME, PHONE_NUMBERS);
     private static final String CONTACT_JSON = "{ \"name\": \"Donald\", \"phoneNumbers\": [\"+1234567\", \"+4567890\"] }";
@@ -82,12 +82,12 @@ public class ContactControllerTest {
 
     @Test
     public void shouldGetAllContacts() throws Exception {
-        List<Contact> list = new ArrayList<>(Arrays.asList(CONTACT));
+        List<Contact> list = List.of(CONTACT);
         String listOfContacts = mapper.writeValueAsString(list);
 
         when(mockService
                 .findAll())
-                .thenReturn(Arrays.asList(CONTACT));
+                .thenReturn(list);
 
         mockMvc.perform(get(URI))
                 .andDo(print())

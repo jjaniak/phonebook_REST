@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RepositoryTests {
@@ -36,7 +35,7 @@ public class RepositoryTests {
     @Test
     @DisplayName("should get all contacts from repository")
     public void shouldGetAllContacts() {
-        Set<Contact> expected = new HashSet<>(Arrays.asList(elvisContact, olgaContact));
+        Set<Contact> expected = Set.of(elvisContact, olgaContact);
         Set<Contact> actual = new HashSet<>(repository.findAll());
 
         assertEquals(expected, actual, "found contacts do not match");
@@ -45,11 +44,11 @@ public class RepositoryTests {
     @Test
     @DisplayName("should get all phone numbers for requested name")
     public void shouldGetAllPhoneNumbersByName() {
-        final Set<String> expectedPhones1 = new HashSet<>(asList("+500489126", "+529731004", "+671992037"));
+        final Set<String> expectedPhones1 = Set.of("+500489126", "+529731004", "+671992037");
         assertEquals(expectedPhones1, repository.findAllPhonesByName(olgaName),
                 "phone numbers do not match");
 
-        final Set<String> expectedPhones2 = new HashSet<>(asList("+128322771"));
+        final Set<String> expectedPhones2 = Set.of("+128322771");
         assertEquals(expectedPhones2, repository.findAllPhonesByName(elvisName),
                 "phone numbers do not match");
     }
@@ -69,7 +68,7 @@ public class RepositoryTests {
     @DisplayName("should add new contact")
     public void shouldAddNewContact() {
         String name = "Witcher";
-        Set<String> phoneNumbers = new HashSet<>(Arrays.asList("+48225196900", "+791482321"));
+        Set<String> phoneNumbers = Set.of("+48225196900", "+791482321");
         Contact newContact = new Contact(name, phoneNumbers);
 
         Contact createdContact = repository.addContact(newContact);
@@ -82,7 +81,7 @@ public class RepositoryTests {
     @Test
     @DisplayName("should add phone number for correct name")
     public void shouldAddPhoneNumberForName() {
-        Set<String> elvisPhones = new HashSet<>(Arrays.asList("+128322771", "+600345913"));
+        Set<String> elvisPhones = Set.of("+128322771", "+600345913");
         Contact expectedContact = new Contact(elvisName, elvisPhones);
         Contact actualContact = repository.addPhone(elvisName, "+600345913");
 
@@ -126,7 +125,7 @@ public class RepositoryTests {
 
         assertFalse(repository.getData().containsValue(olgaContact));
 
-        Set<Contact> expected = new HashSet<>(Arrays.asList(elvisContact));
+        Set<Contact> expected = Set.of(elvisContact);
         Set<Contact> actual = new HashSet<>(repository.getData().values());
 
         assertEquals(expected, actual);
