@@ -19,11 +19,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.*;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -73,7 +71,6 @@ public class ContactControllerTest {
         String emptyArray = "[]";
 
         mockMvc.perform(get(URI))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(emptyArray));
 
@@ -90,7 +87,6 @@ public class ContactControllerTest {
                 .thenReturn(list);
 
         mockMvc.perform(get(URI))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(listOfContacts));
 
@@ -104,7 +100,6 @@ public class ContactControllerTest {
                 .thenReturn(PHONE_NUMBERS);
 
         mockMvc.perform(get(URI + NAME))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(PHONE_NUMBERS_JSON));
 
@@ -118,7 +113,6 @@ public class ContactControllerTest {
                 .thenThrow(new NoSuchElementException(EXCEPTION_MESSAGE));
 
         mockMvc.perform(get(URI + NAME))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(JSON_ERROR_MESSAGE));
 
@@ -133,9 +127,7 @@ public class ContactControllerTest {
 
         mockMvc.perform(post(URI)
                 .content(CONTACT_JSON)
-                .contentType(APPLICATION_JSON)
-                .characterEncoding(UTF_8.name()))
-                .andDo(print())
+                .contentType(APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(CONTACT_JSON));
 
@@ -149,9 +141,7 @@ public class ContactControllerTest {
 
         mockMvc.perform(post(URI)
                 .content(invalidContactJson)
-                .contentType(APPLICATION_JSON)
-                .characterEncoding(UTF_8.name()))
-                .andDo(print())
+                .contentType(APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         verify(mockService, times(0)).addContact(invalidContact);
@@ -165,9 +155,7 @@ public class ContactControllerTest {
 
         mockMvc.perform(put(URI + NAME)
                 .content(JSON_PHONE)
-                .contentType(APPLICATION_JSON)
-                .characterEncoding(UTF_8.name()))
-                .andDo(print())
+                .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(CONTACT_JSON));
 
@@ -182,9 +170,7 @@ public class ContactControllerTest {
 
         mockMvc.perform(put(URI + NAME)
                 .content(JSON_PHONE)
-                .contentType(APPLICATION_JSON)
-                .characterEncoding(UTF_8.name()))
-                .andDo(print())
+                .contentType(APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(JSON_ERROR_MESSAGE_2));
 
@@ -199,9 +185,7 @@ public class ContactControllerTest {
 
         mockMvc.perform(put(URI + NAME)
                 .content(JSON_PHONE)
-                .contentType(APPLICATION_JSON)
-                .characterEncoding(UTF_8.name()))
-                .andDo(print())
+                .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(JSON_ERROR_MESSAGE));
 
@@ -211,7 +195,6 @@ public class ContactControllerTest {
     @Test
     public void shouldDeleteContact() throws Exception {
         mockMvc.perform(delete(URI + NAME))
-                .andDo(print())
                 .andExpect(status().isNoContent());
 
         verify(mockService).removeContact(NAME);
@@ -222,7 +205,6 @@ public class ContactControllerTest {
         doThrow(new NoSuchElementException(EXCEPTION_MESSAGE)).when(mockService).removeContact(NAME);
 
         mockMvc.perform(delete(URI + NAME))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(JSON_ERROR_MESSAGE));
 
