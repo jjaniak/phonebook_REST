@@ -15,6 +15,7 @@
         <spring.version>5.2.3.RELEASE</spring.version>
         <servlets.version>4.0.1</servlets.version>
         <jstl.version>1.2</jstl.version>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
 
     <dependencies>
